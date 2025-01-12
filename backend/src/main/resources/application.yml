@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_tech
+    username: ecommerce_tech
+    password: Paulo99#
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    enable-lazy-loading: true
+  liquibase:
+    change-log: classpath:/db/changelog/master.xml
+    default-schema: ecommerce_tech
+    contexts: dev
+  application:
+    name: EcommerceBackend
+  server:
+    port: 8080
