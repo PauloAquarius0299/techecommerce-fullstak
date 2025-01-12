@@ -1,6 +1,7 @@
-package paulotech.backend.order.domain.user;
+package paulotech.backend.order.domain.user.dto;
 
-import lombok.Builder;
+
+import org.jilt.Builder;
 import paulotech.backend.shared.error.domain.Assert;
 
 @Builder

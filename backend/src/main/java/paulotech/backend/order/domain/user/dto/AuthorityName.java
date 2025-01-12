@@ -1,4 +1,4 @@
-package paulotech.backend.order.domain.user;
+package paulotech.backend.order.domain.user.dto;
 
 import paulotech.backend.shared.error.domain.Assert;
 
