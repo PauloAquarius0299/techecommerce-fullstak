@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ecommerce_tech
-    username: ecommerce_tech
+    username: postgres
     password: Paulo99#
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -27,3 +27,11 @@ spring:
     name: EcommerceBackend
   server:
     port: 8080
+
+    cors:
+      allowed-origins: http://localhost:4200
+      allowed-methods: "*"
+      allowed-headers: "*"
+      exposed-headers: "*"
+      allow-credentials: false
+      max-age: 3600
