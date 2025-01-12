@@ -1,5 +1,12 @@
 package paulotech.backend.shared.error.domain;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 public final class Assert {
     private Assert() {}
 
