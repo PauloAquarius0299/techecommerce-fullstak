@@ -5,10 +5,10 @@ import org.jilt.Builder;
 import paulotech.backend.shared.error.domain.Assert;
 
 @Builder
-public record UserAddressToUpdate(UserPublicId userPublic, UserAddress userAddress) {
+public record UserAddressToUpdate(UserPublicId userPublicId, UserAddress userAddress) {
 
     public UserAddressToUpdate {
-        Assert.notNull("userPublic", userPublic);
+        Assert.notNull("userPublicId", userPublicId);
         Assert.notNull("userAddress", userAddress);
     }
 }
