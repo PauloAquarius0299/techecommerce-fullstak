@@ -13,6 +13,7 @@ import paulotech.backend.order.domain.user.aggregate.AuthorityEntityBuilder;
 import paulotech.backend.order.domain.user.dto.AuthorityName;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,5 +46,25 @@ public class AuthorityEntity implements Serializable {
         return authorityEntities.stream()
                 .map(authorityEntity -> AuthorityBuilder.authority().name(new AuthorityName(authorityEntity.name)).build())
                 .collect(Collectors.toSet());
+    }
+
+    public @NotNull @Size(max = 50) String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull @Size(max = 50) String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof AuthorityEntity)) return false;
+        return Objects.equals(name, this.name);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(name);
     }
 }
