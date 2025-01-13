@@ -1,4 +1,4 @@
-package paulotech.backend.wire.security.primary;
+package paulotech.backend.wire.primary;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.filters.CorsFilter;
