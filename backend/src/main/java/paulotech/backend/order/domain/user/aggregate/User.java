@@ -78,5 +78,38 @@ public class User {
         this.userPublicId = new UserPublicId(UUID.randomUUID());
     }
 
+    public static User fromTokenAttributes(Map<String, Object> attributes, List<String> rolesFromAccessToken){
+        UserBuilder  userBuilder = UserBuilder.user();
+
+        if(attributes.containsKey("preferred_email")){
+            userBuilder.userEmail(new UserEmail(attributes.get("preferred_email").toString()));
+        }
+
+        if(attributes.containsKey("last_name")){
+            userBuilder.lastname(new UserLastname(attributes.get("last_name").toString()));
+        }
+
+        if(attributes.containsKey("first_name")){
+            userBuilder.firstname(new UserFisrtname(attributes.get("first_name").toString()));
+        }
+
+        if(attributes.containsKey("picture")){
+            userBuilder.userImagemUrl(new UserImagemUrl(attributes.get("picture").toString()));
+        }
+
+        if(attributes.containsKey("last_signed_in")){
+            userBuilder.lastSeen(Instant.parse(attributes.get("last_signed_in").toString()));
+        }
+
+        Set<Authority> authorities = rolesFromAccessToken
+                .stream()
+                .map(authority -> new AuthorityBuilder().authority().name(new AuthorityName(authority)).build())
+                .collect(Collectors.toSet());
+
+        userBuilder.authorities(authorities);
+
+        return userBuilder.build();
+    }
+
 
 }
