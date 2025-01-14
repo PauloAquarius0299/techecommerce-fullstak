@@ -1,6 +1,7 @@
 package paulotech.backend.order.domain.infra.secondary.service.kindle;
 
 import org.apache.hc.core5.http.ContentType;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -14,10 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class KindleService {
 
+    private static final Logger log = (Logger) LoggerFactory.getLogger(KindleService.class);
     @Value("${application.kindle.api}")
     private String kindleApi;
 
