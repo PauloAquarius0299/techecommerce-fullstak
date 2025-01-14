@@ -15,7 +15,7 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long>{
 
     List<UserEntity> findByPublicIdIn(List<String> publicIds);
 
-    Optional<UserEntity> findOnebyPublicId(UUID publicId);
+    Optional<UserEntity> findOneByPublicId(UUID publicId);
 
     @Modifying
     @Query("UPDATE UserEntity  user " +
