@@ -8,7 +8,6 @@ import paulotech.backend.order.domain.user.dto.UserAddressToUpdate;
 import paulotech.backend.order.domain.user.dto.UserEmail;
 import paulotech.backend.order.domain.user.dto.UserPublicId;
 import paulotech.backend.order.domain.user.repositories.UserRepository;
-import paulotech.backend.order.domain.infra.secondary.repository.UserJpaRepository;
 
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class SpringDataUserRepository implements UserRepository {
 
     @Override
     public Optional<User> get(UserPublicId userPublicId) {
-        return repository.findOnebyPublicId(userPublicId.value())
+        return repository.findOneByPublicId(userPublicId.value())
                 .map(UserEntity::toDomain);
     }
 

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "ecommerce_user")
-@Builder
 @Getter
 @Setter
 public class UserEntity {
@@ -50,7 +49,7 @@ public class UserEntity {
     private String addressCity;
 
     @Column(name = "address_zid_code")
-    private String addressZidCode;
+    private String addressZipCode;
 
     @Column(name = "address_country")
     private String addressCountry;
@@ -78,7 +77,7 @@ public class UserEntity {
         this.publicId = publicId;
         this.addressStreet = addressStreet;
         this.addressCity = addressCity;
-        this.addressZidCode = addressZidCode;
+        this.addressZipCode = addressZidCode;
         this.addressCountry = addressCountry;
         this.lastSeen = lastSeen;
         this.authorities = authorities;
@@ -106,7 +105,7 @@ public class UserEntity {
         if(user.getUserAddress() != null){
             userEntityBuilder.addressStreet(user.getUserAddress().street());
             userEntityBuilder.addressCity(user.getUserAddress().city());
-            userEntityBuilder.addressZidCode(user.getUserAddress().zipCode());
+            userEntityBuilder.addressZipCode(user.getUserAddress().zipCode());
             userEntityBuilder.addressCountry(user.getUserAddress().country());
         }
 
@@ -132,7 +131,7 @@ public class UserEntity {
                     UserAddressBuilder.userAddress()
                             .street(userEntity.getAddressStreet())
                             .city(userEntity.getAddressCity())
-                            .zipCode(userEntity.getAddressZidCode())
+                            .zipCode(userEntity.getAddressZipCode())
                             .country(userEntity.getAddressCountry())
                             .build());
         }

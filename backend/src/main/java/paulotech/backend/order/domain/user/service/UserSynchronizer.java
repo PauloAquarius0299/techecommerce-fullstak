@@ -1,4 +1,4 @@
-package paulotech.backend.order.domain.service;
+package paulotech.backend.order.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;

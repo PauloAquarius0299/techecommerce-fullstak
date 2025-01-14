@@ -4,7 +4,7 @@ import org.jilt.Builder;
 import paulotech.backend.order.domain.user.dto.AuthorityName;
 import paulotech.backend.shared.error.domain.Assert;
 
-@Builder
+
 public class Authority {
 
     private AuthorityName name;

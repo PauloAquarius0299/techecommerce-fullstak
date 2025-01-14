@@ -42,7 +42,7 @@ public class UserEntityBuilder {
         return this;
     }
 
-    public UserEntityBuilder addressZidCode(String addressZipCode) {
+    public UserEntityBuilder addressZipCode(String addressZipCode) {
         this.addressZipCode = addressZipCode;
         return this;
     }
@@ -88,7 +88,7 @@ public class UserEntityBuilder {
         userEntity.setPublicId(this.publicId);
         userEntity.setAddressStreet(this.addressStreet);
         userEntity.setAddressCity(this.addressCity);
-        userEntity.setAddressZidCode(this.addressZipCode);
+        userEntity.setAddressZipCode(this.addressZipCode);
         userEntity.setAddressCountry(this.addressCountry);
         userEntity.setAuthorities(this.authorities);
         userEntity.setFirstname(this.firstname);
