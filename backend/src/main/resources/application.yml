@@ -8,6 +8,7 @@ spring:
       poolName: Hikari
       auto-commit: false
     type: com.zaxxer.hikari.HikariDataSource
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,12 +20,23 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     enable-lazy-loading: true
+
   liquibase:
     change-log: classpath:/db/changelog/master.xml
     default-schema: ecommerce_tech
     contexts: dev
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://paulotech.kinde.com
+          jwk-set-uri: https://paulotech.kinde.com/.well-known/jwks
+          audiences: http://localhost:8080/api
+
   application:
     name: EcommerceBackend
+
   server:
     port: 8080
 
@@ -34,9 +46,10 @@ spring:
       allowed-headers: "*"
       exposed-headers: "*"
       allow-credentials: false
-      max-age: 3600
-    kinde:
-      api: http://paulotech.kinde.com
-      client-id: ${KINDE_CLIENT_ID}
-      client-secret: ${KINDE_SECRET_KEY}
-      audience: https://paulotech.kinde.com/api
+      max-age: 300
+
+  kinde:
+    api: http://paulotech.kinde.com
+    client-id: ${KINDE_CLIENT_ID}
+    client-secret: ${KINDE_SECRET_KEY}
+    audience: https://paulotech.kinde.com/api

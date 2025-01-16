@@ -1,6 +1,7 @@
 package paulotech.backend.order.domain.infra.secondary.service.kindle;
 
 import org.apache.hc.core5.http.ContentType;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -10,17 +11,18 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
+
 
 @Service
 public class KindleService {
 
-    private static final Logger log = (Logger) LoggerFactory.getLogger(KindleService.class);
+    private static final Logger log = LoggerFactory.getLogger(KindleService.class);
     @Value("${application.kindle.api}")
     private String kindleApi;
 
@@ -52,7 +54,9 @@ public class KindleService {
                     .toEntity(KindleAccessToken.class);
             return Optional.of(accessToken.getBody().accessToken());
         } catch (Exception e){
-            return Optional.empty();
+            log.error("Erro ao obter token: {}", e.getMessage(), e);
+            throw new IllegalStateException("Erro ao obter token", e);
+
         }
     }
 
@@ -62,7 +66,7 @@ public class KindleService {
         var typeRef = new ParameterizedTypeReference<Map<String, Object>>() {};
 
         ResponseEntity<Map<String, Object>> authorization = restClient.get()
-                .uri(kindleApi + "/api/v1/user?id={id}" + userId)
+                .uri(String.format("%s/api/v1/user?id=%s", kindleApi, userId))
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
