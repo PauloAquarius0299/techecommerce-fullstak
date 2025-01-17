@@ -1,9 +1,12 @@
 package paulotech.backend.product.domain.aggregates;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import paulotech.backend.product.domain.dto.*;
+import paulotech.backend.product.infra.secondary.entity.CategoryEntity;
+import paulotech.backend.product.infra.secondary.entity.PictureEntity;
 import paulotech.backend.shared.error.domain.Assert;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @AllArgsConstructor
+@Builder
 public class Product {
 
     private final ProductBrand productBrand;
@@ -20,14 +24,16 @@ public class Product {
     private final ProductDescription  productDescription;
     private final ProductPrice productPrice;
     private final ProductSize productSize;
-    private final Category category;
-    private final List<Picture> pictures;
+    private final CategoryEntity category;
+    private final List<PictureEntity> pictures;
     private Long dbId;
     private boolean featured;
     private PublicId publicId;
     private int nbInStock;
 
-    public Product(ProductBrand productBrand, ProductName productName, ProductColor productColor, ProductDescription productDescription, ProductPrice productPrice, ProductSize productSize, Category category, List<Picture> pictures) {
+    public Product(ProductBrand productBrand, ProductName productName, ProductColor productColor,
+                   ProductDescription productDescription, ProductPrice productPrice, ProductSize productSize,
+                   CategoryEntity category, List<PictureEntity> pictures) {
         this.productBrand = productBrand;
         this.productName = productName;
         this.productColor = productColor;
@@ -52,4 +58,5 @@ public class Product {
     public void initDefaultFields() {
         this.publicId = new PublicId(UUID.randomUUID());
     }
+
 }
