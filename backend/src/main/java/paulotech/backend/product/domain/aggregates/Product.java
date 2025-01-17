@@ -7,6 +7,7 @@ import paulotech.backend.product.domain.dto.*;
 import paulotech.backend.shared.error.domain.Assert;
 
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -46,5 +47,9 @@ public class Product {
         Assert.notNull("productSize", productSize);
         Assert.notNull("category", category);
         Assert.notNull("pictures", pictures);
+    }
+
+    public void initDefaultFields() {
+        this.publicId = new PublicId(UUID.randomUUID());
     }
 }
