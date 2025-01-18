@@ -15,7 +15,7 @@ public abstract class SpringDataCategoryRepository implements CategoryRepository
 
     private final JpaCategoryRepository jpaCategoryRepository;
 
-    public Page<CategoryEntity> findAll(Pageable pageable) {
+    public Page<Category> findAll(Pageable pageable) {
        return jpaCategoryRepository.findAll(pageable).map(CategoryEntity::to);
     }
 
@@ -25,7 +25,7 @@ public abstract class SpringDataCategoryRepository implements CategoryRepository
     }
 
     @Override
-    public CategoryEntity save(Category categoryToCreate) {
+    public Category save(Category categoryToCreate) {
         CategoryEntity categoryToSave = CategoryEntity.from(categoryToCreate);
         CategoryEntity savedCategory = jpaCategoryRepository.save(categoryToSave);
         return CategoryEntity.to(savedCategory);

@@ -21,11 +21,11 @@ public class Category {
         Assert.notNull("name", categoryName);
     }
 
-    private void initDefualtFields() {
+    public void initDefaultFields() {
         this.publicId = new PublicId(UUID.randomUUID());
     }
 
-    public String getName(){
+    public CategoryName getName(){
         return name;
     }
 
@@ -33,7 +33,7 @@ public class Category {
         return dbId;
     }
 
-    public UUID getPublicId() {
+    public PublicId getPublicId() {
         return publicId.value();
     }
 
