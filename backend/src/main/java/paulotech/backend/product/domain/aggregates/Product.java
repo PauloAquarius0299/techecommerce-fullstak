@@ -24,8 +24,8 @@ public class Product {
     private final ProductDescription  productDescription;
     private final ProductPrice productPrice;
     private final ProductSize productSize;
-    private final CategoryEntity category;
-    private final List<PictureEntity> pictures;
+    private final Category category;
+    private final List<Picture> pictures;
     private Long dbId;
     private boolean featured;
     private PublicId publicId;
@@ -33,7 +33,7 @@ public class Product {
 
     public Product(ProductBrand productBrand, ProductName productName, ProductColor productColor,
                    ProductDescription productDescription, ProductPrice productPrice, ProductSize productSize,
-                   CategoryEntity category, List<PictureEntity> pictures) {
+                   Category category, List<Picture> pictures) {
         this.productBrand = productBrand;
         this.productName = productName;
         this.productColor = productColor;

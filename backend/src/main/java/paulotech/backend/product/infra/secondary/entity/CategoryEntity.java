@@ -45,11 +45,11 @@ public class CategoryEntity extends AbstractAuditingEntity<Long> {
         this.products = products;
     }
 
-    public static CategoryEntity from(CategoryEntity category) {
+    public static CategoryEntity from(Category category) {
         CategoryEntity.CategoryEntityBuilder categoryEntityBuilder = CategoryEntity.builder();
 
-        if (category.getId()!= null) {
-            categoryEntityBuilder.id(category.getId());
+        if (category.getDbId()!= null) {
+            categoryEntityBuilder.id(category.getDbId());
         }
 
         return categoryEntityBuilder
@@ -58,11 +58,11 @@ public class CategoryEntity extends AbstractAuditingEntity<Long> {
                 .build();
     }
 
-    public static CategoryEntity to(CategoryEntity category) {
-        return CategoryEntity.builder()
-                .id(category.getId())
-                .name(String.valueOf(new CategoryName(category.getName())))
-                .publicId(new PublicId(category.getPublicId()).value())
+    public static Category to(CategoryEntity category) {
+        return Category.builder()
+                .dbId(category.getId())
+                .name(new CategoryName(category.getName()))
+                .publicId(new PublicId(category.getPublicId()))
                 .build();
     }
 

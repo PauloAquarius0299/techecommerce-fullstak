@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import paulotech.backend.product.domain.aggregates.Picture;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -48,6 +45,9 @@ public class PictureEntity {
     }
 
     public static PictureEntity fromSingle(Picture picture) {
+        if (picture == null) {
+            return null;
+        }
         return PictureEntity.builder()
                 .file(picture.file())
                 .mimeType(picture.mimeType())
@@ -55,6 +55,9 @@ public class PictureEntity {
     }
 
     public static Picture to(PictureEntity pictureEntity) {
+        if (pictureEntity == null) {
+            return null;
+        }
         return Picture.builder()
                 .file(pictureEntity.getFile())
                 .mimeType(pictureEntity.getMimeType())
@@ -66,17 +69,19 @@ public class PictureEntity {
             return new HashSet<>();
         }
         return pictures.stream()
+                .filter(Objects::nonNull)
                 .map(PictureEntity::fromSingle)
                 .collect(Collectors.toSet());
     }
 
     public static List<Picture> to(Set<PictureEntity> pictureEntities) {
         if (pictureEntities == null) {
-            return List.of();
+            return new ArrayList<>();
         }
         return pictureEntities.stream()
+                .filter(Objects::nonNull)
                 .map(PictureEntity::to)
-                .collect(Collectors.toList()).reversed();
+                .collect(Collectors.toList());
     }
 
 //    public static PictureEntity fromSingle(Picture picture) {

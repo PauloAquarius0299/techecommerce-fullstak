@@ -34,7 +34,7 @@ public class Category {
     }
 
     public UUID getPublicId() {
-        return publicId;
+        return publicId.value();
     }
 
 

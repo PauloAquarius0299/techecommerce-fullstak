@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import paulotech.backend.product.domain.dto.ProductSize;
+import paulotech.backend.product.infra.secondary.entity.PictureEntity;
 import paulotech.backend.product.infra.secondary.entity.ProductEntity;
 
 import java.util.List;
@@ -29,8 +31,12 @@ public interface JpaProductRepository extends JpaRepository<ProductEntity, Long>
     List<ProductEntity> findAllByPublicIdIn(List<UUID> publicIds);
 
     @Modifying
-    @Query("UPDATE ProductEntity  product " +
+    @Query("UPDATE ProductEntity product " +
             "SET product.nbInStock = product.nbInStock - :quantity " +
             "WHERE product.publicId = :productPublicId")
-    void updateQuantity(UUID productPublicId, long quantity);
+    void updateQuantity(@Param("productPublicId") UUID productPublicId, @Param("quantity") long quantity);
+
+    @Modifying
+    @Query("UPDATE PictureEntity p SET p.product = :product WHERE p IN :pictures")
+    void saveAllPictures(@Param("pictures") List<PictureEntity> pictures, @Param("product") ProductEntity product);
 }

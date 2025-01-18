@@ -13,10 +13,7 @@ import paulotech.backend.product.infra.secondary.entity.CategoryEntity;
 import paulotech.backend.product.infra.secondary.entity.PictureEntity;
 import paulotech.backend.product.infra.secondary.entity.ProductEntity;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,15 +23,30 @@ public abstract class SpringDataProductRepository implements ProductRepository {
     private final JpaCategoryRepository jpaCategoryRepository;
     private final JpaProductPictureRepository jpaProductPictureRepository;
 
-    @Override
     public Product save(Product productToCreate) {
+        // Primeiro, vamos converter o produto para entidade
         ProductEntity newProductEntity = ProductEntity.from(productToCreate);
+
+        // Buscar e validar a categoria
         Optional<CategoryEntity> categoryEntityOpt = jpaCategoryRepository.findByPublicId(newProductEntity.getCategory().getPublicId());
-        CategoryEntity categoryEntity = categoryEntityOpt.orElseThrow(() -> new EntityNotFoundException(String.format("No category found with Id %s", productToCreate.getCategory().getPublicId())));
+        CategoryEntity categoryEntity = categoryEntityOpt.orElseThrow(
+                () -> new EntityNotFoundException(String.format("No category found with Id %s", productToCreate.getCategory().getPublicId()))
+        );
+
+        // Configurar a categoria
         newProductEntity.setCategory(categoryEntity);
+
+        // Salvar o produto
         ProductEntity savedProductEntity = jpaProductRepository.save(newProductEntity);
 
-        saveAllPictures(productToCreate.getPictures(), savedProductEntity);
+        // Criar as entidades de imagem diretamente do objeto de domínio
+        Set<PictureEntity> pictureEntities = PictureEntity.from(productToCreate.getPictures());
+
+        // Configurar a referência ao produto para cada imagem
+        pictureEntities.forEach(pictureEntity -> pictureEntity.setProduct(savedProductEntity));
+
+        jpaProductRepository.saveAllPictures(new ArrayList<>(pictureEntities), savedProductEntity);
+        savedProductEntity.setPictures(pictureEntities);
 
         return ProductEntity.to(savedProductEntity);
     }

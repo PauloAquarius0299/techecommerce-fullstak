@@ -107,7 +107,7 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
                 .productSize(productEntity.getSize())
                 .publicId(new PublicId(productEntity.getPublicId()))
                 .category(CategoryEntity.to(productEntity.getCategory()))
-//                .pictures(PictureEntity.to(productEntity.getPictures()))
+                .pictures(PictureEntity.to(productEntity.getPictures()))
                 .featured(productEntity.getFeatured())
                 .nbInStock(productEntity.getNbInStock())
                 .build();
