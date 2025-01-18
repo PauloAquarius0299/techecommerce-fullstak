@@ -1,5 +1,6 @@
 package paulotech.backend.product.domain.aggregates;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import paulotech.backend.product.domain.dto.CategoryName;
 import paulotech.backend.product.domain.dto.PublicId;
@@ -7,6 +8,7 @@ import paulotech.backend.shared.error.domain.Assert;
 
 import java.util.UUID;
 
+@Builder
 @RequiredArgsConstructor
 public class Category {
 
@@ -23,7 +25,7 @@ public class Category {
         this.publicId = new PublicId(UUID.randomUUID());
     }
 
-    public CategoryName getName(){
+    public String getName(){
         return name;
     }
 
@@ -31,7 +33,7 @@ public class Category {
         return dbId;
     }
 
-    public PublicId getPublicId() {
+    public UUID getPublicId() {
         return publicId;
     }
 

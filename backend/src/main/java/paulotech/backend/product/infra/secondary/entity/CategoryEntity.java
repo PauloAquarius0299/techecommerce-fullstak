@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import paulotech.backend.product.domain.aggregates.Category;
+import paulotech.backend.product.domain.dto.CategoryName;
+import paulotech.backend.product.domain.dto.PublicId;
 import paulotech.backend.shared.jpa.AbstractAuditingEntity;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,13 +18,14 @@ import java.util.UUID;
 @Table(name = "product_category")
 @Setter
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class CategoryEntity extends AbstractAuditingEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categorySequence")
     @SequenceGenerator(name = "categorySequence", sequenceName = "product_category_sequence", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -33,31 +37,45 @@ public class CategoryEntity extends AbstractAuditingEntity<Long> {
     @OneToMany(mappedBy = "category")
     private Set<ProductEntity> products;
 
-    public CategoryEntity(String name, UUID publicId, Set<ProductEntity> products) {
+    @Builder
+    public CategoryEntity(Long id, String name, UUID publicId, Set<ProductEntity> products) {
+        this.id = id;
         this.name = name;
         this.publicId = publicId;
         this.products = products;
     }
 
-    public static CategoryEntity from(Category category){
+    public static CategoryEntity from(CategoryEntity category) {
         CategoryEntity.CategoryEntityBuilder categoryEntityBuilder = CategoryEntity.builder();
 
-        if (category.getDbId() != null) {
-            categoryEntityBuilder.id(category.getDbId());
+        if (category.getId()!= null) {
+            categoryEntityBuilder.id(category.getId());
         }
 
-        return CategoryEntity.builder()
-                .name(category.getName().toString())
-                .publicId(category.getPublicId().value())
+        return categoryEntityBuilder
+                .name(category.getName())
+                .publicId(category.getPublicId())
                 .build();
     }
 
-    public static CategoryEntity to(CategoryEntity categoryEntity){
+    public static CategoryEntity to(CategoryEntity category) {
         return CategoryEntity.builder()
-                .id(categoryEntity.getId())
-                .name(categoryEntity.getName())
-                .publicId(categoryEntity.getPublicId())
+                .id(category.getId())
+                .name(String.valueOf(new CategoryName(category.getName())))
+                .publicId(new PublicId(category.getPublicId()).value())
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CategoryEntity that)) return false;
+        return Objects.equals(publicId, that.publicId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(publicId);
     }
 
 }

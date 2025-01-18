@@ -14,6 +14,7 @@ import paulotech.backend.shared.jpa.AbstractAuditingEntity;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -93,6 +94,7 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
                 .nbInStock(product.getNbInStock())
                 .category(CategoryEntity.from(product.getCategory()))
                 .build();
+
     }
 
     public static Product to(ProductEntity productEntity) {
@@ -105,13 +107,23 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
                 .productSize(productEntity.getSize())
                 .publicId(new PublicId(productEntity.getPublicId()))
                 .category(CategoryEntity.to(productEntity.getCategory()))
-                .pictures(PictureEntity.to(productEntity.getPictures()))
+//                .pictures(PictureEntity.to(productEntity.getPictures()))
                 .featured(productEntity.getFeatured())
                 .nbInStock(productEntity.getNbInStock())
                 .build();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductEntity that)) return false;
+        return featured == that.featured && Objects.equals(brand, that.brand) && Objects.equals(color, that.color) && Objects.equals(description, that.description) && Objects.equals(name, that.name) && Objects.equals(price, that.price) && size == that.size && Objects.equals(publicId, that.publicId);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(brand, color, description, name, price, featured, size, publicId);
+    }
 
 }
 

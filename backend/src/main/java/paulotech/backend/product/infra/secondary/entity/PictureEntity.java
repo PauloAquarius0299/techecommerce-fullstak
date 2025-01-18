@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import paulotech.backend.product.domain.aggregates.Picture;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -16,12 +17,12 @@ import java.util.stream.Collectors;
 @Table(name = "product_picture")
 @Setter
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class PictureEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pictureSequence")
-    @SequenceGenerator(name = "pictureSequence", sequenceName = "picture_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "pictureSequence", sequenceName = "product_picture_sequence", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -32,9 +33,12 @@ public class PictureEntity {
     @Column(name = "file_content_type", nullable = false)
     private String mimeType;
 
-    @ManyToOne
-    @JoinColumn(name = "product_fk", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_fk", nullable = false)
     private ProductEntity product;
+
+    public PictureEntity() {
+    }
 
     public PictureEntity(Long id, byte[] file, String mimeType, ProductEntity product) {
         this.id = id;
@@ -43,24 +47,60 @@ public class PictureEntity {
         this.product = product;
     }
 
-    public static PictureEntity from(List<PictureEntity> picture){
+    public static PictureEntity fromSingle(Picture picture) {
         return PictureEntity.builder()
                 .file(picture.file())
                 .mimeType(picture.mimeType())
                 .build();
     }
 
+    public static Picture to(PictureEntity pictureEntity) {
+        return Picture.builder()
+                .file(pictureEntity.getFile())
+                .mimeType(pictureEntity.getMimeType())
+                .build();
+    }
+
     public static Set<PictureEntity> from(List<Picture> pictures) {
-        return pictures.stream().map(PictureEntity::from).collect(Collectors.toSet());
+        if (pictures == null) {
+            return new HashSet<>();
+        }
+        return pictures.stream()
+                .map(PictureEntity::fromSingle)
+                .collect(Collectors.toSet());
     }
 
-    public Picture to() {
-        return new Picture(this.file, this.mimeType);
+    public static List<Picture> to(Set<PictureEntity> pictureEntities) {
+        if (pictureEntities == null) {
+            return List.of();
+        }
+        return pictureEntities.stream()
+                .map(PictureEntity::to)
+                .collect(Collectors.toList()).reversed();
     }
 
-    public static List<Picture> to(Set<PictureEntity> pictureEntities){
-        return pictureEntities.stream().map(PictureEntity::to).collect(Collectors.toList());
-    }
+//    public static PictureEntity fromSingle(Picture picture) {
+//        return PictureEntity.builder()
+//                .file(picture.file())
+//                .mimeType(picture.mimeType())
+//                .build();
+//    }
+//
+//    public static Picture to(PictureEntity pictureEntity) {
+//        return Picture.builder()
+//                .file(pictureEntity.getFile())
+//                .mimeType(pictureEntity.getMimeType())
+//                .build();
+//    }
+//
+//    public static Set<PictureEntity> from(List<Picture> pictures) {
+//        return pictures.stream().map(PictureEntity::fromSingle).collect(Collectors.toSet());
+//    }
+//
+//    public static List<Picture> to(Set<PictureEntity> pictureEntities) {
+//        return pictureEntities.stream().map(PictureEntity::to).collect(Collectors.toList());
+//    }
+
 
     @Override
     public boolean equals(Object o) {
