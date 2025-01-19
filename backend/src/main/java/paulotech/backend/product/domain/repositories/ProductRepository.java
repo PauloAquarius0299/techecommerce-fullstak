@@ -35,4 +35,6 @@ public interface ProductRepository {
     List<Product> findByPublicIds(List<PublicId> publicIds);
 
     void updateQuantity(ProductPublicId productPublicId, long quantity);
+
+    void updateQuantity(PublicId productPublicId, long quantity);
 }

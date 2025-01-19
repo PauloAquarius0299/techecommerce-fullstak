@@ -9,13 +9,19 @@ import paulotech.backend.shared.error.domain.Assert;
 import java.util.UUID;
 
 @Builder
-@RequiredArgsConstructor
 public class Category {
 
     private final CategoryName name;
 
     private Long dbId;
     private PublicId publicId;
+
+    public Category(CategoryName name, Long dbId, PublicId publicId) {
+        assertMandatoryFields(name);
+        this.name = name;
+        this.dbId = dbId;
+        this.publicId = publicId;
+    }
 
     private void assertMandatoryFields(CategoryName categoryName) {
         Assert.notNull("name", categoryName);
@@ -25,7 +31,7 @@ public class Category {
         this.publicId = new PublicId(UUID.randomUUID());
     }
 
-    public CategoryName getName(){
+    public CategoryName getName() {
         return name;
     }
 
@@ -34,8 +40,7 @@ public class Category {
     }
 
     public PublicId getPublicId() {
-        return publicId.value();
+        return publicId;
     }
-
 
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.persistence.FetchType;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import paulotech.backend.product.domain.aggregates.Product;
@@ -23,7 +22,6 @@ import java.util.UUID;
 @Table(name =  "product")
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Builder
 public class ProductEntity extends AbstractAuditingEntity<Long> {
 
@@ -67,6 +65,34 @@ public class ProductEntity extends AbstractAuditingEntity<Long> {
     @ManyToOne
     @JoinColumn(name = "category_fk", referencedColumnName = "id")
     private CategoryEntity category;
+
+    public ProductEntity(
+            Long id,
+            String brand,
+            String color,
+            String description,
+            String name,
+            Double price,
+            Boolean featured,
+            ProductSize size,
+            UUID publicId,
+            int nbInStock,
+            Set<PictureEntity> pictures,
+            CategoryEntity category
+    ) {
+        this.id = id;
+        this.brand = brand;
+        this.color = color;
+        this.description = description;
+        this.name = name;
+        this.price = price;
+        this.featured = featured;
+        this.size = size;
+        this.publicId = publicId;
+        this.nbInStock = nbInStock;
+        this.pictures = pictures != null ? pictures : new HashSet<>();
+        this.category = category;
+    }
 
     public ProductEntity(String brand, String color, String description, String name, double price, boolean featured, ProductSize size, UUID publicId, int nbInStock, CategoryEntity category) {
         this.brand = brand;

@@ -24,25 +24,15 @@ public abstract class SpringDataProductRepository implements ProductRepository {
     private final JpaProductPictureRepository jpaProductPictureRepository;
 
     public Product save(Product productToCreate) {
-        // Primeiro, vamos converter o produto para entidade
         ProductEntity newProductEntity = ProductEntity.from(productToCreate);
-
-        // Buscar e validar a categoria
         Optional<CategoryEntity> categoryEntityOpt = jpaCategoryRepository.findByPublicId(newProductEntity.getCategory().getPublicId());
         CategoryEntity categoryEntity = categoryEntityOpt.orElseThrow(
                 () -> new EntityNotFoundException(String.format("No category found with Id %s", productToCreate.getCategory().getPublicId()))
         );
 
-        // Configurar a categoria
         newProductEntity.setCategory(categoryEntity);
-
-        // Salvar o produto
         ProductEntity savedProductEntity = jpaProductRepository.save(newProductEntity);
-
-        // Criar as entidades de imagem diretamente do objeto de domínio
         Set<PictureEntity> pictureEntities = PictureEntity.from(productToCreate.getPictures());
-
-        // Configurar a referência ao produto para cada imagem
         pictureEntities.forEach(pictureEntity -> pictureEntity.setProduct(savedProductEntity));
 
         jpaProductRepository.saveAllPictures(new ArrayList<>(pictureEntities), savedProductEntity);

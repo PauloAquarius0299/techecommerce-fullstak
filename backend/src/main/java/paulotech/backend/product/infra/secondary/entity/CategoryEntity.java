@@ -53,8 +53,8 @@ public class CategoryEntity extends AbstractAuditingEntity<Long> {
         }
 
         return categoryEntityBuilder
-                .name(category.getName())
-                .publicId(category.getPublicId())
+                .name(category.getName().value())
+                .publicId(category.getPublicId().value())
                 .build();
     }
 
