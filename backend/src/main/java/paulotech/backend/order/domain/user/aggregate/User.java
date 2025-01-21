@@ -1,8 +1,8 @@
 package paulotech.backend.order.domain.user.aggregate;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.jilt.Builder;
 import paulotech.backend.order.domain.user.dto.*;
 import paulotech.backend.shared.error.domain.Assert;
 
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
+@Builder
 public class User {
 
     private UserLastname lastname;
@@ -78,7 +79,7 @@ public class User {
     }
 
     public static User fromTokenAttributes(Map<String, Object> attributes, List<String> rolesFromAccessToken){
-        UserBuilder  userBuilder = UserBuilder.user();
+        UserBuilder userBuilder = User.builder();
 
         if(attributes.containsKey("preferred_email")){
             userBuilder.userEmail(new UserEmail(attributes.get("preferred_email").toString()));
@@ -89,7 +90,7 @@ public class User {
         }
 
         if(attributes.containsKey("first_name")){
-            userBuilder.firstname(new UserFisrtname(attributes.get("first_name").toString()));
+            userBuilder.fisrtname(new UserFisrtname(attributes.get("first_name").toString()));
         }
 
         if(attributes.containsKey("picture")){
@@ -100,9 +101,10 @@ public class User {
             userBuilder.lastSeen(Instant.parse(attributes.get("last_signed_in").toString()));
         }
 
-        Set<Authority> authorities = rolesFromAccessToken
-                .stream()
-                .map(authority -> new AuthorityBuilder().authority().name(new AuthorityName(authority)).build())
+        Set<Authority> authorities = rolesFromAccessToken.stream()
+                .map(authority -> Authority.builder()
+                        .name(new AuthorityName(authority))
+                        .build())
                 .collect(Collectors.toSet());
 
         userBuilder.authorities(authorities);

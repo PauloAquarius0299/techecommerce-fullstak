@@ -6,10 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.jilt.Builder;
+import lombok.Builder;
 import paulotech.backend.order.domain.user.aggregate.Authority;
-import paulotech.backend.order.domain.user.aggregate.AuthorityBuilder;
-import paulotech.backend.order.domain.user.aggregate.AuthorityEntityBuilder;
 import paulotech.backend.order.domain.user.dto.AuthorityName;
 
 import java.io.Serializable;
@@ -38,13 +36,17 @@ public class AuthorityEntity implements Serializable {
 
     public static Set<AuthorityEntity> from(Set<Authority> authorities) {
         return authorities.stream()
-                .map(authority -> AuthorityEntityBuilder.authorityEntity()
-                        .name(authority.getName().name()).build()).collect(Collectors.toSet());
+                .map(authority -> AuthorityEntity.builder()
+                        .name(authority.getName().name())
+                        .build())
+                .collect(Collectors.toSet());
     }
 
     public static Set<Authority> toDomain(Set<AuthorityEntity> authorityEntities) {
         return authorityEntities.stream()
-                .map(authorityEntity -> AuthorityBuilder.authority().name(new AuthorityName(authorityEntity.name)).build())
+                .map(authorityEntity -> Authority.builder()
+                        .name(new AuthorityName(authorityEntity.getName()))
+                        .build())
                 .collect(Collectors.toSet());
     }
 

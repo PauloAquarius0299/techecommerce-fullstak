@@ -1,12 +1,12 @@
 package paulotech.backend.order.domain.infra.primary;
 
-import org.jilt.Builder;
+import lombok.Builder;
 import paulotech.backend.order.domain.user.aggregate.User;
 
 import java.util.Set;
 import java.util.UUID;
 
-
+@Builder
 public record RestUser(UUID publicId,
                        String firstName,
                        String lastName,
@@ -15,7 +15,7 @@ public record RestUser(UUID publicId,
                        Set<String> authorities) {
 
     public static RestUser from(User user){
-        RestUserBuilder restUserBuilder = RestUserBuilder.restUser();
+        RestUserBuilder restUserBuilder = RestUser.builder();
 
         if(user.getImagemUrl() != null){
             restUserBuilder.imageUrl(user.getImagemUrl().value());

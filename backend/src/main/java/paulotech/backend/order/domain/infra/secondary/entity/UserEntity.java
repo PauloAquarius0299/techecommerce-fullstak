@@ -1,11 +1,10 @@
 package paulotech.backend.order.domain.infra.secondary.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.jilt.Builder;
 import paulotech.backend.order.domain.user.aggregate.User;
-import paulotech.backend.order.domain.user.aggregate.UserBuilder;
 import paulotech.backend.order.domain.user.dto.*;
 
 import java.time.Instant;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 @Table(name = "ecommerce_user")
 @Getter
 @Setter
+@Builder
 public class UserEntity {
 
     @Id
@@ -92,7 +92,7 @@ public class UserEntity {
     }
 
     public static UserEntity from(User user){
-        UserEntityBuilder userEntityBuilder = UserEntityBuilder.userEntity();
+        UserEntityBuilder userEntityBuilder = UserEntity.builder();
 
         if(user.getImagemUrl() != null){
             userEntityBuilder.imageUrl(user.getImagemUrl().value());
@@ -120,7 +120,7 @@ public class UserEntity {
     }
 
     public static User toDomain(UserEntity userEntity){
-        UserBuilder userBuilder = UserBuilder.user();
+        User.UserBuilder userBuilder = User.builder();
 
         if(userEntity.getImageUrl() != null){
             userBuilder.userImagemUrl(new UserImagemUrl(userEntity.getImageUrl()));
@@ -128,18 +128,19 @@ public class UserEntity {
 
         if(userEntity.getAddressStreet() != null){
             userBuilder.userAddress(
-                    UserAddressBuilder.userAddress()
-                            .street(userEntity.getAddressStreet())
-                            .city(userEntity.getAddressCity())
-                            .zipCode(userEntity.getAddressZipCode())
-                            .country(userEntity.getAddressCountry())
-                            .build());
+                    new UserAddress(
+                            userEntity.getAddressStreet(),
+                            userEntity.getAddressCity(),
+                            userEntity.getAddressZipCode(),
+                            userEntity.getAddressCountry()
+                    )
+            );
         }
 
         return userBuilder
                 .userEmail(new UserEmail(userEntity.getEmail()))
                 .lastname(new UserLastname(userEntity.getLastname()))
-                .firstname(new UserFisrtname(userEntity.getFirstname()))
+                .fisrtname(new UserFisrtname(userEntity.getFirstname()))
                 .authorities(AuthorityEntity.toDomain(userEntity.getAuthorities()))
                 .userPublicId(new UserPublicId(userEntity.getPublicId()))
                 .dbId(userEntity.getId())
