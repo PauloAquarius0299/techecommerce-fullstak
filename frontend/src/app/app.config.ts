@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor()])),
     provideAuth({
-      config:{
+      config: {
         authority: environment.kinde.authority,
         redirectUrl: environment.kinde.redirectUrl,
         postLogoutRedirectUri: environment.kinde.postLogoutRedirectUri,
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
-        logLevel: LogLevel.Debug,
+        logLevel: LogLevel.Warn,
         secureRoutes: [environment.apiUrl],
         customParamsAuthRequest: {
           audience: environment.kinde.audience,

@@ -1,4 +1,4 @@
-import { faCartShopping, faTruckFast, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faCheck, faTruckFast, faXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {faInstagram, faGithub, faLinkedin} from '@fortawesome/free-brands-svg-icons';
 
@@ -7,5 +7,7 @@ export const fontAwesomeIcons: IconDefinition[] = [
   faCartShopping,
   faTruckFast,
   faLinkedin,
-  faGithub
+  faGithub,
+  faXmark,
+  faCheck
 ];
