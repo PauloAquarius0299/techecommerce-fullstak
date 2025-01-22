@@ -12,7 +12,7 @@ import { ToastService } from './shared/toast/toast.service';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet, 
+    RouterOutlet,
     FontAwesomeModule,
     NavbarComponent,
     FooterComponent,
@@ -27,18 +27,19 @@ export class AppComponent implements OnInit {
   private faIconLibrary = inject(FaIconLibrary);
   private faConfig = inject(FaConfig);
 
-  private Oauth2Service = inject(Oauth2Service);
+  private oauth2Service = inject(Oauth2Service);
 
   toastService = inject(ToastService);
 
   platformId = inject(PLATFORM_ID);
 
   constructor() {
-    if(isPlatformBrowser(this.platformId)){
-      this.Oauth2Service.initAuthentication();
+    if (isPlatformBrowser(this.platformId)) {
+      this.oauth2Service.initAuthentication();
     }
-    this.Oauth2Service.connectedUserQuery = this.Oauth2Service.fetch();
+    this.oauth2Service.connectedUserQuery = this.oauth2Service.fetch();
   }
+
 
   ngOnInit(): void {
     this.initFontAwesome();
@@ -48,5 +49,5 @@ export class AppComponent implements OnInit {
     this.faConfig.defaultPrefix = 'fas';
     this.faIconLibrary.addIcons(...fontAwesomeIcons);
   }
-  
+
 }

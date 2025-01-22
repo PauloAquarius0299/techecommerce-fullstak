@@ -12,23 +12,25 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class NavbarComponent  {
 
-  Oauth2Service = inject(Oauth2Service);
+  oauth2Service = inject(Oauth2Service);
 
-  connectedUserQuery = this.Oauth2Service.connectedUserQuery;
+  connectedUserQuery = this.oauth2Service.connectedUserQuery;
 
   login(): void {
     this.closeDropDownMenu();
-    this.Oauth2Service.login();
+    this.oauth2Service.login();
   }
 
   logout(): void {
     this.closeDropDownMenu();
-    this.Oauth2Service.logout();
+    this.oauth2Service.logout();
   }
 
   isConnected(): boolean {
-    return this.connectedUserQuery?.status() === 'success'
-    && this.connectedUserQuery?.data()?.email !== this.Oauth2Service.notConnected
+    return (
+      this.connectedUserQuery?.status() === 'success' &&
+      this.connectedUserQuery?.data()?.email !== this.oauth2Service.notConnected
+    );
   }
   closeDropDownMenu() {
     const bodyElement = document.activeElement as HTMLBodyElement;
