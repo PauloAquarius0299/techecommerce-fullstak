@@ -1,8 +1,11 @@
+import { AdminProductService } from './../../admin/service/admin-product.service';
 import { Oauth2Service } from './../../auth/oauth2.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -37,6 +40,10 @@ export class NavbarComponent  {
     if(bodyElement){
       bodyElement.blur();
     }
+  }
+
+  closeMenu(menu: HTMLDetailsElement) {
+    menu.removeAttribute('open');
   }
 
   constructor() { }

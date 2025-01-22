@@ -19,11 +19,21 @@
         </details>
       </li>
       <li>
-        <details>
-          #AdminMenu
+        <details #adminMenu>
           <summary>Admin</summary>
           <ul class="z-30">
-            <li><a href="/products">Todos</a></li>
+            <li>
+              <a routerLink="admin/categories/list"
+                 (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Categorias</a>
+            </li>
+            <li>
+              <a routerLink="admin/products/list"
+                 (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Produtos</a>
+            </li>
+            <li>
+              <a routerLink="admin/orders/list"
+                 (click)="closeMenu(adminMenu)" (clickOutside)="closeMenu(adminMenu)">Pedidos</a>
+            </li>
           </ul>
         </details>
       </li>
