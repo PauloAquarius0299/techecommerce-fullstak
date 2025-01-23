@@ -40,7 +40,6 @@ export class AppComponent implements OnInit {
     this.oauth2Service.connectedUserQuery = this.oauth2Service.fetch();
   }
 
-
   ngOnInit(): void {
     this.initFontAwesome();
   }

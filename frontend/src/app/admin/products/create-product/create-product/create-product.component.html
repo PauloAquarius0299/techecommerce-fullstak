@@ -1,0 +1,158 @@
+<div class='grid grid-cols-3'>
+  <div></div>
+  <form id="createForm" (ngSubmit)="create()" [formGroup]="createForm">
+    <h1 class="text-lg font-bold">Criar novo Produto</h1>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Nome</span>
+      </div>
+      <input 
+      type='text' placeholder='Type name here'
+      class='input input-bordered w-full' formControlName='name'
+      [class.input-error]="name.invalid && !name.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="name; track: 'required'">
+          Name is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Marca</span>
+      </div>
+      <input 
+      type='text' placeholder='Type brand here'
+      class='input input-bordered w-full' formControlName='brand'
+      [class.input-error]="brand.invalid && !brand.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="brand; track: 'required'">
+          Brand is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Cor</span>
+      </div>
+      <input 
+      type='text' placeholder='Type Color here'
+      class='input input-bordered w-full' formControlName='color'
+      [class.input-error]="color.invalid && !color.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="color; track: 'required'">
+          Color is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Descrinção</span>
+      </div>
+      <input 
+      type='text' placeholder='Type description here'
+      class='input input-bordered w-full' formControlName='description'
+      [class.input-error]="description.invalid && !description.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="description; track: 'required'">
+          Description is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Preço</span>
+      </div>
+      <input 
+      type='number' placeholder='Value price here'
+      class='input input-bordered w-full' formControlName='price'
+      [class.input-error]="price.invalid && !price.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="price; track: 'required'">
+          Is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Numero no estoque</span>
+      </div>
+      <input 
+      type='number' placeholder='Number the stock here'
+      class='input input-bordered w-full' formControlName='stock'
+      [class.input-error]="stock.invalid && !stock.untouched"
+      />
+      <div class='label'>
+        <span class="label-text-alt text-red-600" *ngControlError="stock; track: 'required'">
+          Is required
+        </span>
+      </div>
+    </label>
+    <label class="form-control w-full">
+      <div class='label'>
+        <span class='label-text'>Tamanhos</span>
+      </div>
+      <select class="select select-bordered w-full" formControlName="size">
+        <option disabled selected>Select size</option>
+        @for (size of sizes; track size) {
+          <option value="{{size}}">{{ size }}</option>
+        }
+      </select>
+      <div class='label'></div>
+    </label>
+    <label class='form-control w-full'>
+      <div class="label">
+        <span class="label-text">Categoria</span>
+      </div>
+      <select class='select select-bordered w-full' formControlName='category'>
+        <option disabled selected>Selecionar tamanho</option>
+        @if(categoriesQuery.isSuccess()){
+          @for(category of categoriesQuery.data()!.content; track category.publicId){
+            <option value="{{category.publicId}}+{{category.name}}">{{category.name}}</option>
+          }
+        }
+      </select>
+    </label>
+    <div class='label'></div>
+    <label class='form-control w-full'>
+      <div class="label">
+        <span class="label-text">Imagens</span>
+      </div>
+      <input 
+      type='file'
+      class='file-input w-full' multiple formControlName='pictures'
+      (change)="onUploadNewPictures($event.target)"
+      [class.input-error]="brand.invalid && !brand.untouched"
+      />
+      <div class="label">
+        @if (productPictures.length === 0 && pictures.invalid && !pictures.untouched) {
+          <span class="label-text-alt text-red-600">
+          At least one picture is required
+        </span>
+        }
+      </div>
+    </label>
+    <div class="form-control w-full">
+      <label class="label cursor-pointer">
+        <span class="label-text">Featured</span>
+      </label>
+      <div class="flex justify-center">
+        <input type="checkbox" checked="checked" class="checkbox checkbox-primary"
+        formControlName="featured">
+      </div>
+      <div class="label"></div>
+    </div>
+    <button type="submit" class="btn bg-black text-white w-full"
+    [disabled]="createForm.invalid">
+      @if(loading) {
+        <span class="loading-spinner loading"></span>
+      }
+      Create product
+    </button>
+  </form>
+  <div></div>
+</div>

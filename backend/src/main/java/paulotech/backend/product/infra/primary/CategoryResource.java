@@ -28,27 +28,26 @@ public class CategoryResource {
     private final ProductApplicationService productApplicationService;
 
     @PostMapping
-//    @PreAuthorize("hasAnyRole('" + ROLE_ADMIN +"')")
-    public ResponseEntity<RestCategory> save(@RequestBody RestCategory category){
+    public ResponseEntity<RestCategory> save(@RequestBody RestCategory category) {
         Category categoryDomain = RestCategory.toDomain(category);
         Category categorySaved = productApplicationService.createCategory(categoryDomain);
         return ResponseEntity.ok(RestCategory.fromDomain(categorySaved));
     }
 
-    @DeleteMapping
-    public ResponseEntity<UUID> delete(UUID publicId){
+    @DeleteMapping("/{publicId}")
+    public ResponseEntity<?> delete(@PathVariable UUID publicId) {
         try {
             PublicId deletedCategoryPublicId = productApplicationService.deleteCategory(new PublicId(publicId));
             return ResponseEntity.ok(deletedCategoryPublicId.value());
-        } catch (EntityNotFoundException enff){
+        } catch (EntityNotFoundException enff) {
             log.error("Could not delete category with id {}", publicId, enff);
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, enff.getMessage());
-            return ResponseEntity.of(problemDetail).build();
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Category not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<RestCategory>> findAll(Pageable pageable){
+    public ResponseEntity<Page<RestCategory>> findAll(Pageable pageable) {
         Page<Category> categories = productApplicationService.findAllCategory(pageable);
         PageImpl<RestCategory> restCategories = new PageImpl<>(
                 categories.map(RestCategory::fromDomain).toList(),
