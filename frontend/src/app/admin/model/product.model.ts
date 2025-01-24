@@ -45,3 +45,20 @@ export type CreateProductFormContent = {
   pictures: FormControl<ProductPictures[]>;
   stock: FormControl<number>;
 }
+export interface ProductFilter {
+  size?: string;
+  category?: string | null;
+  sort: string[];
+}
+
+export type FilterProductsFormContent = {
+  sort: FormControl<string>;
+  size: FormRecord<FormControl<boolean>>
+}
+
+export interface ProductFilterForm {
+  size?: {
+    [size: string]: boolean;
+  } | undefined;
+  sort: string
+}
